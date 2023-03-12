@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 
 class SignUp extends ChangeNotifier {
@@ -7,6 +5,7 @@ class SignUp extends ChangeNotifier {
   String username = '';
   String email = '';
   String password = '';
+  final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   bool obscureText = false;
 
   onObsecure() {
@@ -34,8 +33,15 @@ class SignUp extends ChangeNotifier {
   }
 
   String? emailValidator(String? value) {
-    if (value == null || value.isEmpty) {
+    // if (value == null || value.isEmpty) {
+    //   return 'Email is required';
+    // }
+    // return null;
+
+    if (value!.isEmpty) {
       return 'Email is required';
+    } else if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email address';
     }
     return null;
   }
