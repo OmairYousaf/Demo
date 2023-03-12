@@ -46,15 +46,25 @@ class Login extends ChangeNotifier {
     if (loginformKey.currentState!.validate()) {
       final status = await Permission.storage.request();
       if (status.isGranted) {
-      } else {}
+        if (username == 'ali' && password == 'ali') {
+          Map<String, dynamic> userSession = {
+            "key": username,
+            "token": password
+          };
+          var session = await UserSession().saveSession(userSession);
+
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const DashBoardScreen()));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please Use ali as username and password'),
+            ),
+          );
+        }
+      }
 
       //    storing user session on login...
-
-      Map<String, dynamic> userSession = {"key": username, "token": password};
-      var session = await UserSession().saveSession(userSession);
-
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const DashBoardScreen()));
     }
   }
 }
